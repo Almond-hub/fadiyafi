@@ -3,357 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Fadi Yafi - Interactive Profile</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: 'Segoe UI', sans-serif;
-            }
-
-            body {
-                color: #fff;
-                overflow-x: hidden;
-            }
-
-            #canvas-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
-                background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
-            }
-
-            .container {
-                position: relative;
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 2rem;
-            }
-
-            .hero {
-                text-align: center;
-                padding: 4rem 0;
-                position: relative;
-            }
-
-            .profile-img {
-                width: 250px;
-                height: 250px;
-                border-radius: 50%;
-                border: 4px solid #00ff9d;
-                margin-bottom: 1.5rem;
-                box-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
-                transform: translateZ(20px);
-                transition: transform 0.3s ease;
-            }
-
-            .profile-img:hover {
-                transform: translateZ(30px) rotate(5deg);
-            }
-
-            h1 {
-                font-size: 3rem;
-                margin-bottom: 1rem;
-                background: linear-gradient(45deg, #00ff9d, #00b8ff);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: blue;
-                text-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
-            }
-
-            .qualities-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 2rem;
-                margin: 3rem 0;
-            }
-
-            .card {
-                background: rgba(255, 255, 255, 0.05);
-                padding: 2rem;
-                border-radius: 15px;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                transition: transform 0.3s ease;
-                transform-style: preserve-3d;
-            }
-
-            .card:hover {
-                transform: translateY(-10px) translateZ(20px);
-            }
-
-            .good {
-                border-bottom: 4px solid #00ff9d;
-            }
-
-            .bad {
-                border-bottom: 4px solid #ff467e;
-            }
-
-            .gallery {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 2rem;
-                margin: 4rem 0;
-            }
-
-            .gallery-img {
-                width: 100%;
-                height: 300px;
-                border-radius: 15px;
-                object-fit: cover;
-                transition: transform 0.3s ease;
-                box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
-            }
-
-            .gallery-img:hover {
-                transform: translateZ(20px) scale(1.05);
-            }
-
-            .social-links {
-                display: flex;
-                justify-content: center;
-                gap: 1.5rem;
-                margin-top: 2rem;
-            }
-
-            .social-links a {
-                color: #fff;
-                font-size: 1.5rem;
-                transition: color 0.3s ease;
-            }
-
-            .social-links a:hover {
-                color: #00ff9d;
-            }
-
-            @media (max-width: 768px) {
-                .container {
-                    padding: 1rem;
-                }
-
-                h1 {
-                    font-size: 2rem;
-                }
-
-                .profile-img {
-                    width: 180px;
-                    height: 180px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <div id="canvas-container">
-            <canvas id="particle-canvas"></canvas>
-        </div>
-
-        <div class="container">
-            <section class="hero">
-                <img src="https://imgbb.io/ib/QgM9nol8w4tbXdE_1741909003.jpg" 
-                     alt="Fadi Yafi" 
-                     class="profile-img">
-                <h1>Fadi Yafi</h1>
-                <p>15-Year-Old Tech Prodigy &amp; Visionary</p>
-            </section>
-
-            <div class="qualities-grid">
-                <div class="card good">
-                    <h2>🌟 Legendary Strengths</h2>
-                    <ul>
-                        <li>Genius-level problem solving</li>
-                        <li>Charismatic leadership skills</li>
-                        <li>Tech innovation wizard</li>
-                        <li>Unmatched humor sense</li>
-                        <li>Ultra-reliable companion</li>
-                    </ul>
-                </div>
-
-                <div class="card bad">
-                    <h2>⚠️ Human Flaws</h2>
-                    <ul>
-                        <li>Competitive overload mode</li>
-                        <li>System lag intolerance</li>
-                        <li>Decision paralysis risk</li>
-                        <li>Night owl coding sessions</li>
-                        <li>Creative perfectionism</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="gallery">
-                <img src="https://imgbb.io/ib/XBEYdYIC7IlH6c7_1741910598.jpg" 
-                     alt="Fadi Action Shot" 
-                     class="gallery-img">
-                <img src="https://imgbb.io/ib/Wy5ijXrq8j7d9b1_1741910642.jpg" 
-                     alt="Fadi Casual Look" 
-                     class="gallery-img">
-            </div>
-
-            <div class="social-links">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-github"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
-
-        <script>
-            // 3D Particle Background
-            const canvas = document.getElementById('particle-canvas');
-            const ctx = canvas.getContext('2d');
-
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const particles = [];
-            const particleCount = 200;
-
-            class Particle {
-                constructor() {
-                    this.reset();
-                }
-
-                reset() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.z = Math.random() * 1500 + 500;
-                    this.size = Math.random() * 1.5 + 0.5;
-                    this.speed = Math.random() * 0.02 + 0.01;
-                }
-
-                update() {
-                    this.z -= this.speed * 100;
-                    if(this.z < 1) this.reset();
-
-                    const scale = 1000 / (1000 + this.z);
-                    this.sx = (this.x - canvas.width/2) * scale + canvas.width/2;
-                    this.sy = (this.y - canvas.height/2) * scale + canvas.height/2;
-                    this.size = scale * 2;
-                }
-
-                draw() {
-                    ctx.fillStyle = `rgba(0, 255, 157, ${this.size/3})`;
-                    ctx.beginPath();
-                    ctx.arc(this.sx, this.sy, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            // Initialize particles
-            for(let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                particles.forEach(particle => {
-                    particle.update();
-                    particle.draw();
-                });
-
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-
-            // Interactive Mouse Effects
-            document.addEventListener('mousemove', (e) => {
-                particles.forEach(particle => {
-                    const dx = e.clientX - particle.sx;
-                    const dy = e.clientY - particle.sy;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if(dist < 100) {
-                        particle.x += (dx * 0.1);
-                        particle.y += (dy * 0.1);
-                    }
-                });
-            });
-
-            // Scroll Animations
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if(entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.transform = 'translateY(0) translateZ(0)';
-                    }
-
+    <title>Profile Switcher</title>
+    <style>
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
             background: #0a0a0a;
-            color: white;
-            height: 100vh;
+            color: #fff;
             overflow: hidden;
-            position: relative;
-      }
+        }
 
-        .content {
+        .profile-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .portal {
-            position: fixed;
-            bottom: 50px;
-            right: 50px;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #00ff9d, #0099ff);
-            cursor: pointer;
-            animation: portal-glow 2s infinite;
-            transition: all 0.5s ease;
-        }
-
-        .portal:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 40px rgba(0, 255, 157, 0.6);
-        }
-
-        @keyframes portal-glow {
-            0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 157, 0.4); }
-            50% { box-shadow: 0 0 50px rgba(0, 255, 157, 0.8); }
-        }
-
-        .portal-text {
+            opacity: 0;
+            transform: translateY(100%);
+            transition: all 0.8s ease;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            color: #000;
+            width: 100%;
         }
-        </script>
-    </style
-      <head>
-        </body>
-    <div class="content">
-        <h1>Welcome to Quantum Realm</h1>
-        <p>This is the first dimension of knowledge...</p>
-    </div>
 
-    <div class="portal" onclick="navigateToDimension()">
-        <div class="portal-text">Δ</div>
-    </div>
+        .profile-active {
+            opacity: 1;
+            transform: translateY(0);
+            z-index: 1;
+        }
+
+        .profile-content {
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+        }
+
+        .qualities {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: #00ff9d;
+            transform: scale(1.3);
+        }
+
+        .age-badge {
+            background: #00ff9d;
+            color: #000;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-dots"></div>
+
+    <!-- Profile 1 - 15 Years -->
+    <section class="profile-section profile-active" data-index="0">
+        <div class="profile-content">
+            <img src="https://imgbb.io/ib/mACPCi6uSxwM1cx_1741983110.jpg" alt="Fadi Yafi" class="profile-image">
+            <div class="qualities">
+                <div class="age-badge">15 Years Old</div>
+                <h1>Fadi Yafi</h1>
+                <div class="strengths">
+                    <h2>🌟 Strengths</h2>
+                    <ul>
+                        <li>ki3om fdaya</li>
+                        <li>detective conan</li>
+                        <li>messi fi 1960</li>
+                        <li>k9ari l2assatida</li>
+                    </ul>
+                </div>
+                <div class="weaknesses">
+                    <h2>⚠️ Weaknesses</h2>
+                    <ul>
+                        <li>kissalm brjlih</li>
+                        <li>makissma3ch lhadra</li>
+                        <li>kital3ha 3la l3bari</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile 2 - 15 Years -->
+    <section class="profile-section" data-index="1">
+        <div class="profile-content">
+            <img src="https://imgbb.io/ib/wUc37xdz5TwPBXo_1741985838.jpg" alt="haitham elmissi" class="profile-image">
+            <div class="qualities">
+                <div class="age-badge">15 Years Old</div>
+                <h1>Haitham Elmissi</h1>
+                <div class="strengths">
+                    <h2>🌟 Strengths</h2>
+                    <ul>
+                        <li>3waj mn chnakiya</li>
+                        <li>kirapi bl2ichara</li>
+                        <li>ki3oum fdaya</li>
+                        <li>makisalamch kisalmo 3lih</li>
+                    </ul>
+                </div>
+                <div class="weaknesses">
+                    <h2>⚠️ Weaknesses</h2>
+                    <ul>
+                        <li>makitayfh</li>
+                        <li>makissma3ch lhadra</li>
+                        <li>season 4</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile 3 - 16 Years -->
+    <section class="profile-section" data-index="2">
+        <div class="profile-content">
+            <img src="https://imgbb.io/ib/HbmY4pQMw4I2mmO_1741986201.jpg" alt="Nabil Hajjar" class="profile-image">
+            <div class="qualities">
+                <div class="age-badge">16 Years Old</div>
+                <h1>Nabil Hajjar</h1>
+                <div class="strengths">
+                    <h2>🌟 Strengths</h2>
+                    <ul>
+                        <li>kitrini ta7t lma </li>
+                        <li>kisma3 lberd</li>
+                        <li>b7al jnoun</li>
+                        <li>kikhanzer fi chamch</li>
+                    </ul>
+                </div>
+                <div class="weaknesses">
+                    <h2>⚠️ Weaknesses</h2>
+                    <ul>
+                        <li>kitayb atay</li>
+                        <li>makiyakoulch</li>
+                        <li>legendary man</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <script>
-        function navigateToDimension() {
-            // Add portal activation animation
-            document.querySelector('.portal').style.transform = 'scale(5)';
-            document.querySelector('.portal').style.opacity = '0';
+        const profiles = document.querySelectorAll('.profile-section');
+        const navDots = document.querySelector('.nav-dots');
+        let currentProfile = 0;
 
-            // Delay navigation for animation
-            setTimeout(() => {
-                window.location.href = 'dimension2.html';
-            }, 500);
+        // Create navigation dots
+        profiles.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = `nav-dot ${index === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => switchProfile(index));
+            navDots.appendChild(dot);
+        });
+
+        // Scroll detection
+        let isScrolling = false;
+        window.addEventListener('wheel', (e) => {
+            if (isScrolling) return;
+            isScrolling = true;
+
+            if (e.deltaY > 0) {
+                switchProfile(currentProfile + 1);
+            } else {
+                switchProfile(currentProfile - 1);
+            }
+
+            setTimeout(() => { isScrolling = false; }, 800);
+        });
+
+        function switchProfile(newIndex) {
+            if (newIndex < 0 || newIndex >= profiles.length) return;
+
+            profiles[currentProfile].classList.remove('profile-active');
+            profiles[newIndex].classList.add('profile-active');
+            document.querySelectorAll('.nav-dot')[currentProfile].classList.remove('active');
+            document.querySelectorAll('.nav-dot')[newIndex].classList.add('active');
+            currentProfile = newIndex;
+        }
+
+        // Touch support
+        let touchStartY = 0;
+        window.addEventListener('touchstart', e => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        window.addEventListener('touchend', e => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diff = touchStartY - touchEndY;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    switchProfile(currentProfile + 1);
+                } else {
+                    switchProfile(currentProfile - 1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
