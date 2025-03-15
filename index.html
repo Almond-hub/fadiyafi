@@ -3,110 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Switcher</title>
+    <title>Legendary Family</title>
     <style>
+        :root {
+            --portal-color: #00ff9d;
+            --cosmic-purple: #7d00ff;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
         }
 
         body {
-            background: #0a0a0a;
+            background: #000;
             color: #fff;
+            font-family: 'Arial', sans-serif;
             overflow: hidden;
         }
 
-        .profile-section {
+        .cosmic-bg {
+            position: fixed;
+            width: 100vw;
             height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            opacity: 0;
-            transform: translateY(100%);
-            transition: all 0.8s ease;
+            background: 
+                radial-gradient(circle at 50% 50%, 
+                    rgba(125, 0, 255, 0.1) 0%, 
+                    rgba(0, 0, 0, 1) 70%),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(125, 0, 255, 0.1) 3px,
+                    rgba(125, 0, 255, 0.1) 6px
+                );
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            padding: 4rem;
+            height: 100vh;
+            place-items: center;
+            transform-style: preserve-3d;
+        }
+
+        .portal-card {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .portal-card::before {
+            content: '';
             position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, 
+                var(--portal-color) 0%, 
+                transparent 70%);
+            opacity: 0.3;
+            filter: blur(30px);
+            z-index: -1;
+        }
+
+        .portal-image {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--portal-color);
+            box-shadow: 0 0 30px var(--portal-color);
+            filter: grayscale(0.8);
+            transition: all 0.5s ease;
+        }
+
+        .portal-card:hover {
+            transform: translateZ(50px) scale(1.2);
+        }
+
+        .portal-card:hover .portal-image {
+            filter: grayscale(0);
+            box-shadow: 0 0 50px var(--portal-color);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(20px);
+            display: none;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .profile-active {
+            display: flex;
             opacity: 1;
-            transform: translateY(0);
-            z-index: 1;
+            transform: scale(1);
         }
 
         .profile-content {
-            max-width: 1200px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            align-items: center;
+            margin: auto;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--portal-color);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transform-style: preserve-3d;
         }
 
         .profile-image {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--portal-color);
+            float: left;
+            shape-outside: circle();
+            margin-right: 2rem;
+            box-shadow: 0 0 30px var(--portal-color);
+        }
+
+        .close-portal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--portal-color);
+            text-shadow: 0 0 10px var(--portal-color);
         }
 
         .qualities {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 15px;
+            transform: translateZ(50px);
         }
 
-        .nav-dots {
-            position: fixed;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 100;
-        }
-
-        .nav-dot {
-            width: 12px;
-            height: 12px;
+        /* Cosmic Particles */
+        .particle {
+            position: absolute;
+            background: var(--portal-color);
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            pointer-events: none;
         }
 
-        .nav-dot.active {
-            background: #00ff9d;
-            transform: scale(1.4)
-        }
-
-        .age-badge {
-            background: #00ff9d;
-            color: #000;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 1rem;
-            font-weight: bold;
+        @keyframes portal-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
         }
     </style>
 </head>
 <body>
-    <div class="nav-dots"></div>
+    <div class="cosmic-bg"></div>
+    
+    <div class="portal-grid">
+        <!-- Portal Cards -->
+        <div class="portal-card" onclick="showProfile(1)">
+            <img src="https://imgbb.io/ib/mACPCi6uSxwM1cx_1741983110.jpg" 
+                 alt="Fadi" 
+                 class="portal-image">
+        </div>
+        
+        <div class="portal-card" onclick="showProfile(2)">
+            <img src="https://imgbb.io/ib/wUc37xdz5TwPBXo_1741985838.jpg" 
+                 alt="Haitham" 
+                 class="portal-image">
+        </div>
+        
+        <div class="portal-card" onclick="showProfile(3)">
+            <img src="https://imgbb.io/ib/HbmY4pQMw4I2mmO_1741986201.jpg" 
+                 alt="Nabil" 
+                 class="portal-image">
+        </div>
+        
+        <div class="portal-card" onclick="showProfile(4)">
+            <img src="https://imgbb.io/ib/bFRx3D5R2mP500A_1741997272.jpg" 
+                 alt="Achraf" 
+                 class="portal-image">
+        </div>
+    </div>
 
-    <!-- Profile 1 - 15 Years -->
-    <section class="profile-section profile-active" data-index="0">
+    <!-- Profile Sections -->
+    <section id="profile1" class="profile-section">
         <div class="profile-content">
-            <img src="https://imgbb.io/ib/mACPCi6uSxwM1cx_1741983110.jpg" alt="Fadi Yafi" class="profile-image">
+            <span class="close-portal" onclick="hideProfiles()">✕</span>
+            <img src="https://imgbb.io/ib/mACPCi6uSxwM1cx_1741983110.jpg" 
+                 alt="Fadi" 
+                 class="profile-image">
             <div class="qualities">
-                <div class="age-badge">15 Years Old</div>
-                <h1>Fadi Yafi</h1>
+                <h1>Fadi Yafi <span style="color: var(--portal-color)">(15)</span></h1>
                 <div class="strengths">
-                    <h2>🌟 Strengths</h2>
+                    <h2>🌟 Legendary Powers</h2>
                     <ul>
                         <li>kikhrouj ljnoun blil</li>
                         <li>detective conan</li>
@@ -115,7 +210,7 @@
                     </ul>
                 </div>
                 <div class="weaknesses">
-                    <h2>⚠️ Weaknesses</h2>
+                    <h2>⚠️ Weak Spots</h2>
                     <ul>
                         <li>kissalm brjlih</li>
                         <li>makissma3ch lhadra</li>
@@ -126,15 +221,16 @@
         </div>
     </section>
 
-    <!-- Profile 2 - 15 Years -->
-    <section class="profile-section" data-index="1">
+    <section id="profile2" class="profile-section">
         <div class="profile-content">
-            <img src="https://imgbb.io/ib/wUc37xdz5TwPBXo_1741985838.jpg" alt="haitham elmissi" class="profile-image">
+            <span class="close-portal" onclick="hideProfiles()">✕</span>
+            <img src="https://imgbb.io/ib/wUc37xdz5TwPBXo_1741985838.jpg" 
+                 alt="Haitham" 
+                 class="profile-image">
             <div class="qualities">
-                <div class="age-badge">15 Years Old</div>
-                <h1>Haitham Elmissi</h1>
+                <h1>Haitham Elmissi <span style="color: var(--portal-color)">(15)</span></h1>
                 <div class="strengths">
-                    <h2>🌟 Strengths</h2>
+                    <h2>🌟 Legendary Powers</h2>
                     <ul>
                         <li>l3ma kika7el fach kichoufou</li>
                         <li>kirapi bl2ichara</li>
@@ -143,26 +239,27 @@
                     </ul>
                 </div>
                 <div class="weaknesses">
-                    <h2>⚠️ Weaknesses</h2>
+                    <h2>⚠️ Weak Spots</h2>
                     <ul>
-                        <li>makitayfch</li>
+                        <li>kissalm brjlih</li>
                         <li>makissma3ch lhadra</li>
-                        <li>season 4</li>
+                        <li>kital3ha 3la l3bari</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Profile 3 - 16 Years -->
-    <section class="profile-section" data-index="2">
+    
+    <section id="profile3" class="profile-section">
         <div class="profile-content">
-            <img src="https://imgbb.io/ib/HbmY4pQMw4I2mmO_1741986201.jpg" alt="Nabil Hajjar" class="profile-image">
+            <span class="close-portal" onclick="hideProfiles()">✕</span>
+            <img src="https://imgbb.io/ib/HbmY4pQMw4I2mmO_1741986201.jpg" 
+                 alt="nabil" 
+                 class="profile-image">
             <div class="qualities">
-                <div class="age-badge">16 Years Old</div>
-                <h1>Nabil Hajjar</h1>
+                <h1>Nabil Hajjar <span style="color: var(--portal-color)">(16)</span></h1>
                 <div class="strengths">
-                    <h2>🌟 Strengths</h2>
+                    <h2>🌟 Legendary Powers</h2>
                     <ul>
                         <li>kitrini ta7t lma </li>
                         <li>kisma3 lberd</li>
@@ -171,25 +268,28 @@
                     </ul>
                 </div>
                 <div class="weaknesses">
-                    <h2>⚠️ Weaknesses</h2>
+                    <h2>⚠️ Weak Spots</h2>
                     <ul>
-                        <li>kitayb atay</li>
-                        <li>makiyakoulch</li>
-                        <li>legendary man</li>
+                        <li>kitrini ta7t lma </li>
+                        <li>kisma3 lberd</li>
+                        <li>b7al jnoun</li>
+                        <li>kikhanzer fi chamch</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
     
-    <section class="profile-section" data-index="3">
+    <section id="profile4" class="profile-section">
         <div class="profile-content">
-            <img src="https://imgbb.io/ib/bFRx3D5R2mP500A_1741997272.jpg" alt="Achraf Hajjar" class="profile-image">
+            <span class="close-portal" onclick="hideProfiles()">✕</span>
+            <img src="https://imgbb.io/ib/bFRx3D5R2mP500A_1741997272.jpg" 
+                 alt="achraf" 
+                 class="profile-image">
             <div class="qualities">
-                <div class="age-badge">16 Years Old</div>
-                <h1>Achraf Hajjar</h1>
+                <h1>Achraf Hajjar <span style="color: var(--portal-color)">(16)</span></h1>
                 <div class="strengths">
-                    <h2>🌟 Strengths</h2>
+                    <h2>🌟 Legendary Powers</h2>
                     <ul>
                         <li>ki9ra bzaf</li>
                         <li>kikhla3 drari sghar</li>
@@ -198,7 +298,7 @@
                     </ul>
                 </div>
                 <div class="weaknesses">
-                    <h2>⚠️ Weaknesses</h2>
+                    <h2>⚠️ Weak Spots</h2>
                     <ul>
                         <li>wa7d lkdab</li>
                         <li>ki3raf elon musk</li>
@@ -211,60 +311,36 @@
     </section>
     
     <script>
-        const profiles = document.querySelectorAll('.profile-section');
-        const navDots = document.querySelector('.nav-dots');
-        let currentProfile = 0;
-        
-        // Create navigation dots
-        profiles.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.className = `nav-dot ${index === 0 ? 'active' : ''}`;
-            dot.addEventListener('click', () => switchProfile(index));
-            navDots.appendChild(dot);
-        });
-
-        // Scroll detection
-        let isScrolling = false;
-        window.addEventListener('wheel', (e) => {
-            if (isScrolling) return;
-            isScrolling = true;
-
-            if (e.deltaY > 0) {
-                switchProfile(currentProfile + 1);
-            } else {
-                switchProfile(currentProfile - 1);
-            }
-
-            setTimeout(() => { isScrolling = false; }, 800);
-        });
-
-        function switchProfile(newIndex) {
-            if (newIndex < 0 || newIndex >= profiles.length) return;
-
-            profiles[currentProfile].classList.remove('profile-active');
-            profiles[newIndex].classList.add('profile-active');
-            document.querySelectorAll('.nav-dot')[currentProfile].classList.remove('active');
-            document.querySelectorAll('.nav-dot')[newIndex].classList.add('active');
-            currentProfile = newIndex;
+        function showProfile(num) {
+            document.querySelectorAll('.profile-section').forEach(p => p.classList.remove('profile-active'));
+            document.getElementById(`profile${num}`).classList.add('profile-active');
+            createParticles(50);
         }
 
-        // Touch support
-        let touchStartY = 0;
-        window.addEventListener('touchstart', e => {
-            touchStartY = e.touches[0].clientY;
-        });
+        function hideProfiles() {
+            document.querySelectorAll('.profile-section').forEach(p => p.classList.remove('profile-active'));
+        }
 
-        window.addEventListener('touchend', e => {
-            const touchEndY = e.changedTouches[0].clientY;
-            const diff = touchStartY - touchEndY;
-
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    switchProfile(currentProfile + 1);
-                } else {
-                    switchProfile(currentProfile - 1);
-                }
+        function createParticles(count) {
+            for(let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    width: ${Math.random() * 3}px;
+                    height: ${Math.random() * 3}px;
+                    animation: move ${2 + Math.random() * 3}s linear infinite;
+                `;
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 2000);
             }
+        }
+
+        // Cosmic keyboard control
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') hideProfiles();
         });
     </script>
 </body>
