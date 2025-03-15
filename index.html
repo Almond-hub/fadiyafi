@@ -345,3 +345,119 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Legendary Mobile Dimension</title>
+    <style>
+        /* Previous styles remain */
+
+        @media (max-width: 768px) {
+            .portal-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1.5rem;
+                overflow-y: auto;
+            }
+
+            .portal-card {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .profile-content {
+                width: 95%;
+                padding: 1rem;
+                flex-direction: column;
+                overflow-y: auto;
+                max-height: 90vh;
+            }
+
+            .profile-image {
+                float: none;
+                width: 120px;
+                height: 120px;
+                margin: 0 auto 1rem;
+            }
+
+            .qualities {
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            li {
+                font-size: 0.9rem;
+            }
+
+            .close-portal {
+                top: 0.5rem;
+                right: 0.5rem;
+                font-size: 1.5rem;
+            }
+
+            .portal-card:hover {
+                transform: translateZ(20px) scale(1.1);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portal-grid {
+                padding-top: 2rem;
+            }
+
+            .profile-content {
+                padding: 1rem;
+            }
+
+            .strengths, .weaknesses {
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Previous body content remains -->
+
+    <script>
+        // Mobile touch handling
+        let touchStartY = 0;
+        const touchThreshold = 50;
+
+        document.addEventListener('touchstart', e => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', e => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaY = touchStartY - touchEndY;
+
+            if (Math.abs(deltaY) > touchThreshold) {
+                if (deltaY > 0) {
+                    // Swipe down
+                    hideProfiles();
+                } else {
+                    // Swipe up
+                    if(!document.querySelector('.profile-section.profile-active')) {
+                        showProfile(1);
+                    }
+                }
+            }
+        });
+
+        // Prevent zoom
+        document.addEventListener('gesturestart', e => {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
